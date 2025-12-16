@@ -1,0 +1,5 @@
+{
+  "name": "YouTube Summarizer",
+  "description": "An intelligent, multi-step YouTube video summarizer powered by Gemini 2.5 Flash.",
+  "requestFramePermissions": []
+}

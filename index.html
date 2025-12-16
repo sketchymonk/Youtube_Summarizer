@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // CRITICAL: Polyfill process for browser environments to prevent crash on process.env access
+      // Must be the very first script to run.
+      if (typeof process === 'undefined') {
+        window.process = { env: {} };
+      }
+      
+      // Global error handler to catch load-time errors
+      window.onerror = function(message, source, lineno, colno, error) {
+        console.error("Global Error:", message, error);
+        const root = document.getElementById('root');
+        // If the app hasn't mounted or is blank, show the error overlay
+        if (root) {
+          document.body.innerHTML = ''; // Clear body to ensure error is visible
+          document.body.style.margin = '0';
+          document.body.style.height = '100vh';
+          document.body.style.backgroundColor = '#f9f9f9';
+          
+          const errorDiv = document.createElement('div');
+          errorDiv.innerHTML = `
+            <div style="height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: system-ui, -apple-system, sans-serif;">
+              <div style="max-width: 600px; background: white; padding: 32px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border: 1px solid #ef4444;">
+                <h1 style="color: #dc2626; margin-top: 0; font-size: 24px; font-weight: bold; margin-bottom: 12px;">Application Failed to Start</h1>
+                <p style="color: #4b5563; line-height: 1.5; margin-bottom: 16px;">A critical error occurred while loading the application resources.</p>
+                <div style="background: #f3f4f6; padding: 12px; border-radius: 8px; overflow-x: auto; margin-bottom: 24px; font-family: monospace; font-size: 12px; color: #374151; border: 1px solid #e5e7eb;">
+                  <strong>Error:</strong> ${message}<br/>
+                  <span style="color: #6b7280; display: block; margin-top: 4px;">${source}:${lineno}:${colno}</span>
+                </div>
+                <button onclick="window.location.reload()" style="background: #dc2626; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; transition: background 0.2s;">Reload Page</button>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(errorDiv);
+        }
+      };
+    </script>
+    <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>YouTube Summarizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              yt: {
+                red: '#FF0000',
+                black: '#282828',
+                light: '#f9f9f9',
+                hover: '#cc0000'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        -webkit-tap-highlight-color: transparent;
+        background-color: #f9f9f9;
+        /* iOS Height Fixes */
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        /* Safe Area Fixes for Notch/Home Indicator */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
+      html {
+        height: -webkit-fill-available;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #c1c1c1; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8; 
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.469.0?deps=react@18.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
